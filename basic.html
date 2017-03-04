@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 2 - Basic</title>
+</head>
+<body>
+	<div id="root">
+		<input type="text" id="input" v-model="message">
+
+		<p>Your message is : {{ message }}</p>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '#root',
+			data: {
+				message : "Hello World!"
+			}
+		})
+	</script>
+</body>
+</html>

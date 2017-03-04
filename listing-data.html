@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 2 - Lasting Data</title>
+</head>
+<body>
+	<div id="root">
+		<ul>
+			<li v-for="name in names" v-text="name"></li>
+		</ul>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+		let app = new Vue({
+			el: '#root',
+			data: {
+				names : ['Vivek', 'Vaishali', 'Suchita', 'Smita', 'Vijaykant', 'Sushma']
+			}
+		})
+	</script>
+</body>
+</html>

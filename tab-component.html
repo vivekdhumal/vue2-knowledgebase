@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 2 - Tab Component</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.1/css/bulma.min.css">
+	<style type="text/css">
+		body {
+			padding-top: 40px;
+		}
+	</style>
+</head>
+<body>
+	<div id="root" class="container">
+		<tabs>
+			<tab name="About us" :selected = "true">
+				<h1>This is about us.</h1>
+			</tab>
+			<tab name="About company">
+				<h1>This is about company.</h1>
+			</tab>
+			<tab name="About vision">
+				<h1>This is about vision.</h1>
+			</tab>
+		</tabs><br><br>
+
+		<tabs>
+			<tab name="Music" :selected = "true">
+				<h1>This is a music.</h1>
+			</tab>
+			<tab name="Pictures">
+				<h1>This is a picture.</h1>
+			</tab>
+			<tab name="Videos">
+				<h1>This is a videos.</h1>
+			</tab>
+		</tabs>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+		Vue.component('tabs',{
+			template: `
+				<div>
+					<div class="tabs">
+						<ul>
+							<li v-for="tab in tabs" :class="{ 'is-active' : tab.isActive }">
+								<a :href="tab.href" @click="selectTab(tab)">{{ tab.name }}</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="tabs-detail">
+						<slot></slot>
+					</div>
+				</div>
+			`,
+
+			data() {
+				return {
+					tabs: []
+				}
+			},
+			created() {
+				this.tabs = this.$children;
+			},
+			methods: {
+				selectTab(selectTab) {
+					this.tabs.forEach(tab => {
+						tab.isActive = (tab.name == selectTab.name)
+					});
+				}
+			}
+		});
+
+		Vue.component('tab', {
+			template: `
+				<div v-show="isActive"><slot></slot></div>
+			`,
+			data() {
+				return {
+					isActive : false
+				};
+			},
+			props: {
+				name: { required: true },
+				selected: { default: false }
+			},
+			computed: {
+				href() {
+					return "#"+this.name.toLowerCase().replace(/ /g, '-');
+				}
+			},
+			mounted() {
+				this.isActive = this.selected;
+			}
+		});
+
+		new Vue({
+			el: '#root'
+		})
+	</script>
+</body>
+</html>

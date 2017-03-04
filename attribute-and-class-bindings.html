@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 2 - Attribute And Data Binding</title>
+	<style type="text/css">
+		.is-loading { color: red; }
+	</style>
+</head>
+<body>
+	<div id="root">
+		<!-- Attribute Binding -->
+		<button :disabled="isDisabled" @click="disabledMe">Disabled Me</button>
+		<!-- Class Binding -->
+		<button :class="{ 'is-loading': isLoading }" @click="toggleLoading">Toggle class</button>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+		let app = new Vue({
+			el: '#root',
+			data: {
+				isLoading: true,
+				isDisabled: false
+			},
+			methods: {
+				toggleLoading() {
+					if(this.isLoading)
+						this.isLoading = false;
+					else
+						this.isLoading = true;
+				},
+				disabledMe() {
+					this.isDisabled = true;
+				}
+			}
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 2 - Named Slots</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.1/css/bulma.min.css">
+	<style type="text/css">
+		body {
+			padding-top: 40px;
+		}
+	</style>
+</head>
+<body>
+	<div id="root">
+		<modal>
+			<template slot="modal-header">Hello Modal : Custom Header</template>
+			Hello world!
+			<template slot="modal-footer">				
+				<a class="button is-primary">Save changes</a>
+				<a class="button">Cancel</a>
+			</template>
+		</modal>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+		Vue.component('modal', {
+			template: `
+				<div class="modal is-active">
+					<div class="modal-background"></div>
+					<div class="modal-card">
+						<header class="modal-card-head">
+							<p class="modal-card-title">
+								<slot name="modal-header">
+								My Modal
+								</slot>
+							</p>
+							<button class="delete"></button>
+						</header>
+						<section class="modal-card-body">
+							<slot>Default content here.</slot>
+						</section>
+						<footer class="modal-card-foot">
+							<slot name="modal-footer">
+								<a class="button is-primary">Okay</a>
+							</slot>
+						</footer>
+					</div>
+				</div>
+			`
+		})
+		new Vue({
+			el: '#root'
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 2 - Computed Properties</title>
+	<!-- Raleway font -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <style type="text/css">
+    	html body {
+    		font-family: 'Raleway', sans-serif;
+    		font-size: 15px;
+    		margin: 0 auto;
+    		width: 50%;
+    	}
+    	#root {
+    		margin-top: 2%;
+    		width: 100%;
+    		background: #ddd;
+    		padding: 10px 20px 10px 20px;
+    		border-radius: 5px;
+    	}
+    	.task-lists {
+    		list-style-type: none;
+    		padding: 0px;
+    		width: 100%;
+    	}
+    	.task-lists li {
+    		background: #fff;
+    		padding: 10px;
+    		box-shadow: 1px 1px 1px #888888;
+    		margin-bottom: 10px;
+    	}
+    	.task-lists li input {
+    		float: right;
+    	}
+    	#addTaskForm {
+    		float: right;
+    	}
+    	#addTaskForm input, button {
+    		padding: 8px;
+    	}
+    </style>
+</head>
+<body>
+	<div id="root">
+		<!-- Reverse the message -->
+		<!-- <p>{{ message }} -> {{ reversedMessage }}</p> -->
+
+		<h2>All Tasks
+			<div id="addTaskForm">
+				<input type="text" v-model="inputText" placeholder="Add Task">
+				<button @click="addNewTask">Add</button>				
+			</div>
+		</h2>
+		<ul class="task-lists">
+			<li v-for="(task, index) in tasks">
+				{{ task.description }}				
+				<input type="checkbox" @change="manageTasks(index, task.completed)"  :checked="task.completed" value="1">
+			</li>
+		</ul>
+
+		<h2>Complete Tasks</h2>
+		<ul class="task-lists">
+			<li v-for="task in completedTasks" v-text="task.description"></li>
+		</ul>
+
+		<h2>Incomplete Tasks</h2>
+		<ul class="task-lists">
+			<li v-for="task in incompletedTasks" v-text="task.description"></li>
+		</ul>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '#root',
+			data: {
+				message: 'Hello World',
+				inputText: '',
+				tasks: [
+					{ description: 'Go to the store', completed: true },
+					{ description: 'Buy milk', completed: false },
+					{ description: 'Bring brown bread', completed: false },
+					{ description: 'Work on side project', completed: false },
+					{ description: 'Call to friends', completed: false },
+					{ description: 'Read the books', completed: true },
+				]
+			},
+			computed: {
+				reversedMessage() {
+					return this.message.split('').reverse().join('')
+				},
+				incompletedTasks() {
+					/* below code is also valid */
+					/*return this.tasks.filter(function(task) {
+						return task  = !task.completed;
+					})*/
+					/* or shorthand as per ES16*/
+					return this.tasks.filter(task => !task.completed);
+				},
+				completedTasks() {
+					return this.tasks.filter(task => task.completed);
+				}
+			},
+			methods: {
+				manageTasks(index, taskStatus) {
+					this.tasks[index].completed = ! taskStatus;
+				},
+				addNewTask() {
+					if(this.inputText) {
+						this.tasks.push({ description: this.inputText, completed: false });
+						this.inputText = '';						
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>

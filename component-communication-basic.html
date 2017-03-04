@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 2 - Component Communication Basic</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.1/css/bulma.min.css">
+	<style type="text/css">
+		body {
+			padding-top: 40px;
+		}
+	</style>
+</head>
+<body>
+	<div id="root" class="container">
+		<div class="columns">
+			<div class="column is-one-quarter">
+				<coupon></coupon><br>
+				<article v-if="isCouponApplied" class="message is-success">
+					<div class="message-body">
+						Coupon was applied.
+					</div>
+				</article>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script type="text/javascript">
+		/* Creating custom event dispatcher *you can only listen and fire event through new vue instance */
+		window.Event = new class {
+			constructor() {
+				this.vue = new Vue();
+			}
+
+			fire(event, data = null) {
+				this.vue.$emit(event, data);
+			}
+
+			listen(event, callback) {
+				this.vue.$on(event, callback);
+			}
+		};
+
+		Vue.component('coupon', {
+			data() {
+				return {
+					inputCoupon: ''
+				}
+			},
+			template: `
+				<div>
+					<label class="label">Enter Coupon Code</label>
+					<p class="control">
+					  <input class="input" type="text" v-model="inputCoupon" @blur="appliedCoupon" placeholder="WED360">
+					</p>
+				</div>
+			`,
+			methods: {
+				appliedCoupon() {
+					Event.fire('applied', this.inputCoupon);
+				}
+			}
+		});
+
+		new Vue({
+			el: '#root',
+			data: {
+				isCouponApplied: false
+			},
+			created() {
+				Event.listen('applied', (data) => {
+					this.isCouponApplied = Boolean(data.length);
+				});
+			}
+			/*methods: {
+				appliedCoupon() {
+					this.isCouponApplied = true
+				}
+			}*/
+		})
+	</script>
+</body>
+</html>
